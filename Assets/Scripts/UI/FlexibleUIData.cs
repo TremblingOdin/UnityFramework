@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
+using TMPro;
 
 [CreateAssetMenu(menuName = "Flexible UI Data")]
 public class FlexibleUIData : ScriptableObject
@@ -23,6 +23,8 @@ public class FlexibleUIData : ScriptableObject
     public Color homeColor;
     public Sprite homeIcon;
 
+    public Color menuColor;
+
     public Color settingColor;
     public Sprite settingSprite;
 
@@ -31,11 +33,14 @@ public class FlexibleUIData : ScriptableObject
     public Sprite rightArrowSprite;
     public Sprite leftArrowSprite;
 
-    public Font defaultFont;
+    //Need a whole ass gameobject to store a textmesh pro reference
+    public TextMeshProUGUI defaultText;
 
-    public Font fancyFont;
+    public TextMeshProUGUI fancyText;
     public Sprite fancyHappenings;
 
-    public Font tooltipFont;
+    public TextMeshProUGUI menuText;
+
+    public TextMeshProUGUI tooltipText;
     public Sprite tooltipImage;
 }

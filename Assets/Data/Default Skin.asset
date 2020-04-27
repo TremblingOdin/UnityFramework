@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f078bfd317032b34299f1f7dac10bdc2, type: 3}
+  m_Name: Default Skin
+  m_EditorClassIdentifier: 
+  buttonSprite: {fileID: -6026020940594237414, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  buttonSpriteState:
+    m_HighlightedSprite: {fileID: -9145060539264522285, guid: 999288897c0437d4188e7aa1685541c2,
+      type: 3}
+    m_PressedSprite: {fileID: 6383610024998129927, guid: 999288897c0437d4188e7aa1685541c2,
+      type: 3}
+    m_SelectedSprite: {fileID: 6383610024998129927, guid: 999288897c0437d4188e7aa1685541c2,
+      type: 3}
+    m_DisabledSprite: {fileID: -758608440143612870, guid: 999288897c0437d4188e7aa1685541c2,
+      type: 3}
+  defaultColor: {r: 0.7607844, g: 0.7607844, b: 0.7607844, a: 0}
+  defaultIcon: {fileID: -758608440143612870, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  soundColor: {r: 1, g: 1, b: 1, a: 1}
+  soundOnIcon: {fileID: -33486746810265619, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  soundOffIcon: {fileID: 2562086983521016872, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  cancelColor: {r: 1, g: 0, b: 0, a: 1}
+  cancelIcon: {fileID: -8009610620148154673, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  homeColor: {r: 0.5834629, g: 0.6415094, b: 0.493236, a: 0.78039217}
+  homeIcon: {fileID: 334154914554335797, guid: 999288897c0437d4188e7aa1685541c2, type: 3}
+  menuColor: {r: 1, g: 0, b: 0.9258976, a: 0.78039217}
+  settingColor: {r: 1, g: 0.9895833, b: 0, a: 0.78039217}
+  settingSprite: {fileID: -1957186198677482169, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  downArrowSprite: {fileID: -4125621052988856307, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  upArrowSprite: {fileID: 930681111534297617, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  rightArrowSprite: {fileID: -8048385253618830477, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  leftArrowSprite: {fileID: -1605623083807884718, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  defaultText: {fileID: 7971333327316014149, guid: 4005c78e8117bf843970a32438289857,
+    type: 3}
+  fancyText: {fileID: 8392027894312158144, guid: 6833b966687326145b27a022590d02b3,
+    type: 3}
+  fancyHappenings: {fileID: -7863832929406655731, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  menuText: {fileID: 8336899557041687151, guid: 7f4f7b286fee059419c655796527c8a2,
+    type: 3}
+  tooltipText: {fileID: 8064541966631914356, guid: c1d58e185918c5f489e4bb143fa45d4f,
+    type: 3}
+  tooltipImage: {fileID: -758608440143612870, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}

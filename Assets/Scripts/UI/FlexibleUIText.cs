@@ -2,38 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-[RequireComponent(typeof(Text))]
+
+[RequireComponent(typeof(TextMeshPro))]
 [RequireComponent(typeof(Font))]
 public class FlexibleUIText : FlexibleUI
 {
     public enum TextType
     {
         Default,
-        ToolTip,
-        Fancy
+        Fancy,
+        Menu,
+        ToolTip
     }
 
-    Font font;
+    TextMeshProUGUI tmp;
     //Not all text will have fancy drawings and such
-    Sprite fancyHappenings;
+    Image fancyHappenings;
     public TextType tt;
 
     public override void OnSkinUI()
     {
         base.OnSkinUI();
 
-        font = GetComponent<Text>().font;
+        tmp = GetComponent<TextMeshProUGUI>();
 
-        if(GetComponent<Sprite>() != null)
-        {
-            fancyHappenings = GetComponent<Sprite>();
-        }
+        fancyHappenings = transform.GetChild(0).GetComponent<Image>();
+
+        Debug.Log(tmp);
 
         switch(tt)
         {
             case TextType.Fancy:
                 FancySetup();
+                break;
+            case TextType.Menu:
+                MenuSetup();
                 break;
             case TextType.ToolTip:
                 ToolTipSetup();
@@ -46,18 +51,55 @@ public class FlexibleUIText : FlexibleUI
 
     private void FancySetup()
     {
-        font = skinData.fancyFont;
-        fancyHappenings = skinData.fancyHappenings;
+        tmp.font = skinData.fancyText.font;
+        tmp.colorGradient = skinData.fancyText.colorGradient;
+        tmp.outlineColor = skinData.fancyText.outlineColor;
+        tmp.outlineWidth = skinData.fancyText.outlineWidth;
+        tmp.fontSize = skinData.fancyText.fontSize;
+        tmp.alignment = skinData.fancyText.alignment;
+        tmp.fontStyle = skinData.fancyText.fontStyle;
+
+        fancyHappenings.sprite = skinData.fancyHappenings;
+        fancyHappenings.enabled = true;
+    }
+
+    private void MenuSetup()
+    {
+        tmp.font = skinData.menuText.font;
+        tmp.colorGradient = skinData.menuText.colorGradient;
+        tmp.outlineColor = skinData.menuText.outlineColor;
+        tmp.outlineWidth = skinData.menuText.outlineWidth;
+        tmp.fontSize = skinData.menuText.fontSize;
+        tmp.alignment = skinData.menuText.alignment;
+        tmp.fontStyle = skinData.menuText.fontStyle;
+
+        fancyHappenings.enabled = false;
     }
 
     private void ToolTipSetup()
     {
-        font = skinData.tooltipFont;
-        fancyHappenings = skinData.tooltipImage;
+        tmp.font = skinData.tooltipText.font;
+        tmp.colorGradient = skinData.tooltipText.colorGradient;
+        tmp.outlineColor = skinData.tooltipText.outlineColor;
+        tmp.outlineWidth = skinData.tooltipText.outlineWidth;
+        tmp.fontSize = skinData.tooltipText.fontSize;
+        tmp.alignment = skinData.tooltipText.alignment;
+        tmp.fontStyle = skinData.tooltipText.fontStyle;
+
+        fancyHappenings.sprite = skinData.tooltipImage;
+        fancyHappenings.enabled = true;
     }
 
     private void DefaultSetup()
     {
-        font = skinData.defaultFont;
+        tmp.font = skinData.defaultText.font;
+        tmp.colorGradient = skinData.defaultText.colorGradient;
+        tmp.outlineColor = skinData.defaultText.outlineColor;
+        tmp.outlineWidth = skinData.defaultText.outlineWidth;
+        tmp.fontSize = skinData.defaultText.fontSize;
+        tmp.alignment = skinData.defaultText.alignment;
+        tmp.fontStyle = skinData.defaultText.fontStyle;
+
+        fancyHappenings.enabled = false;
     }
 }

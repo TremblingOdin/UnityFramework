@@ -14,6 +14,7 @@ public class FlexibleUIButton : FlexibleUI
         DownArrow,
         Home,
         LeftArrow,
+        Menu,
         RightArrow,
         Setting,
         Sound,
@@ -62,6 +63,9 @@ public class FlexibleUIButton : FlexibleUI
             case ButtonType.Home:
                 HomeSetup();
                 break;
+            case ButtonType.Menu:
+                MenuSetup();
+                break;
             case ButtonType.Setting:
                 SettingSetup();
                 break;
@@ -72,6 +76,12 @@ public class FlexibleUIButton : FlexibleUI
                 DefaultSetup();
                 break;
         }
+
+        transform.GetChild(0).GetComponent<RectTransform>()
+            .SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, GetComponent<RectTransform>().rect.width * .75f);
+
+        transform.GetChild(0).GetComponent<RectTransform>()
+    .SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, GetComponent<RectTransform>().rect.height * .75f);
     }
 
     //The Arrows should be rewritten with each project in order to add their on click behaviors or you can just add the onclick behaviors in the GUI
@@ -111,6 +121,13 @@ public class FlexibleUIButton : FlexibleUI
         image.color = skinData.homeColor;
         icon.sprite = skinData.homeIcon;
         GetComponent<Button>().onClick.AddListener(CallHomeEvent);
+    }
+
+    private void MenuSetup()
+    {
+        image.color = skinData.menuColor;
+        icon.sprite = null;
+        icon.enabled = false;
     }
 
     private void SettingSetup()
