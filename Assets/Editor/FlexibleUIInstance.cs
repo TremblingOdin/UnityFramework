@@ -11,6 +11,12 @@ public class FlexibleUIInstance : Editor
         Create("Button");
     }
 
+    [MenuItem("GameObject/Flexible UI/Text", priority = 1)]
+    public static void AddText()
+    {
+        Create("Text");
+    }
+
     static GameObject clickedObject;
 
     private static GameObject Create(string objectName)

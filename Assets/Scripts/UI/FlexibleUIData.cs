@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 [CreateAssetMenu(menuName = "Flexible UI Data")]
 public class FlexibleUIData : ScriptableObject
 {
-    public enum ArrowType
-    {
-        OUTLINED, WHITE, FANCY
-    }
-
     public Sprite buttonSprite;
     public SpriteState buttonSpriteState;
 
@@ -34,4 +30,12 @@ public class FlexibleUIData : ScriptableObject
     public Sprite upArrowSprite;
     public Sprite rightArrowSprite;
     public Sprite leftArrowSprite;
+
+    public Font defaultFont;
+
+    public Font fancyFont;
+    public Sprite fancyHappenings;
+
+    public Font tooltipFont;
+    public Sprite tooltipImage;
 }
