@@ -7,11 +7,12 @@ using UnityEditor;
 public class FlexibleUI : MonoBehaviour
 {
     public FlexibleUIData skinData;
+    public bool dontChange;
     private bool hasChanged = false;
 
     public virtual void OnSkinUI()
     {
-        if(!hasChanged)
+        if (!hasChanged || dontChange)
         {
             return;
         } else

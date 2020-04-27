@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System;
 using UnityEngine;
-
+using System.Collections;
 
 public enum GameTypeTitle
 {
@@ -10,7 +12,7 @@ public enum GameTypeTitle
 
 public enum UserSetting
 {
-    VOLUME
+    FULLSCREEN, QUALITY, RESOLUTION, VOLUME
 }
 
 /// <summary>
@@ -19,24 +21,28 @@ public enum UserSetting
 [DisallowMultipleComponent]
 public sealed class GameController
 {
+    private readonly char delimiter = ':';
+
     private static readonly GameController instance = new GameController();
 
     private Dictionary<GameTypeTitle, List<MonoBehaviour>> registeredTypes = new Dictionary<GameTypeTitle, List<MonoBehaviour>>();
-    private Dictionary<UserSetting, object> userSettings = new Dictionary<UserSetting, object>();
+    private Hashtable userSettings = new Hashtable();
     
-    public Dictionary<UserSetting, object> UserSettings
+    public Hashtable UserSettings
     {
         get { return userSettings; }
     }
 
     //User settings file, it's going to get referenced a lot figured this would be the best place to put it
-    public static readonly string userSettingsPath = "Assets/Resources/Files/playerSettings.txt";
+    public static readonly string userSettingsPath = "/playerSettings.dat";
 
     static GameController() { }
 
     private GameController()
     {
-
+        foreach(UserSetting us in (UserSetting[])System.Enum.GetValues(typeof(UserSetting))) {
+            userSettings.Add(us, null);
+        }
     }
 
     public static GameController Instance
@@ -138,5 +144,70 @@ public sealed class GameController
     public bool HasType(GameTypeTitle title)
     {
         return this.registeredTypes.ContainsKey(title);
+    }
+
+    /// <summary>
+    /// Goes through it's usersettings dictionary and writes each enum and value to a instance in the usersetting file
+    /// </summary>
+    /// <returns></returns>
+    public bool SaveSettings()
+    {
+        try
+        {
+            if (!File.Exists(Application.persistentDataPath + userSettingsPath))
+            {
+                File.Create(Application.persistentDataPath + userSettingsPath);
+            }
+
+            StreamWriter sw = new StreamWriter(Application.persistentDataPath + userSettingsPath);
+
+            foreach (UserSetting us in userSettings.Keys)
+            {
+                if (userSettings[us] != null)
+                {
+                    sw.Write(Enum.GetName(typeof(UserSetting), us) + delimiter.ToString() + userSettings[us].ToString() + sw.NewLine);
+                }
+            }
+
+            sw.Close();
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Loads the usersettings dictionary with values from the settings file
+    /// The file should be in a format such as:
+    /// VOLUME:.5
+    /// </summary>
+    /// <returns></returns>
+    public bool LoadSettings()
+    {
+        if(!File.Exists(Application.persistentDataPath + userSettingsPath))
+        {
+            return false;
+        }
+
+        StreamReader sr = new StreamReader(Application.persistentDataPath + userSettingsPath);
+
+        string line;
+        while ((line = sr.ReadLine()) != null)
+        {
+            string settingType = line.Split(delimiter)[0];
+            UserSetting tempUS = (UserSetting)Enum.Parse(typeof(UserSetting), settingType);
+
+            if (Enum.IsDefined(typeof(UserSetting), tempUS))
+            {
+                userSettings[tempUS] = line.Split(delimiter)[1];
+            }
+        }
+
+        return true;
+        
     }
 }

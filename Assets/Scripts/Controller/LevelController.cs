@@ -13,13 +13,14 @@ public class LevelController : MonoBehaviour
     private void Awake()
     {
         paused = false;
-        currentLevel = this.CurrentScene.buildIndex;
+        currentLevel = CurrentScene.buildIndex;
         if(currentLevel != 0)
         {
             SetUpLevel();
         }
         GameController.Instance.RegisterType(this, title, false);
         EventService.Instance.RegisterEventHandler(EventType.Pause, PauseLevel);
+        EventService.Instance.RegisterEventHandler(EventType.Home, LoadMainMenu);
     }
 
     /// <summary>
@@ -52,7 +53,7 @@ public class LevelController : MonoBehaviour
 
         if (buildIndex != 0)
         {
-            this.SetUpLevel();
+            SetUpLevel();
         }
     }
 
@@ -62,7 +63,7 @@ public class LevelController : MonoBehaviour
     public void RestartLevel()
     {
         GameController.Instance.UnregisterTypes();
-        SceneManager.LoadScene(this.CurrentScene.buildIndex);
+        SceneManager.LoadScene(CurrentScene.buildIndex);
     }
 
     /// <summary>

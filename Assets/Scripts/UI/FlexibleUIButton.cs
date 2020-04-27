@@ -30,6 +30,11 @@ public class FlexibleUIButton : FlexibleUI
     {
         base.OnSkinUI();
 
+        if (dontChange)
+        {
+            return;
+        }
+
         image = GetComponent<Image>();
         icon = transform.GetChild(0).GetComponent<Image>();
         button = GetComponent<Button>();

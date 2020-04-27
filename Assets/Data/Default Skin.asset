@@ -23,7 +23,7 @@ MonoBehaviour:
       type: 3}
     m_DisabledSprite: {fileID: -758608440143612870, guid: 999288897c0437d4188e7aa1685541c2,
       type: 3}
-  defaultColor: {r: 0.7607844, g: 0.7607844, b: 0.7607844, a: 0}
+  defaultColor: {r: 0.7607844, g: 0.7607844, b: 0.7607844, a: 1}
   defaultIcon: {fileID: -758608440143612870, guid: 999288897c0437d4188e7aa1685541c2,
     type: 3}
   soundColor: {r: 1, g: 1, b: 1, a: 1}
@@ -60,3 +60,39 @@ MonoBehaviour:
     type: 3}
   tooltipImage: {fileID: -758608440143612870, guid: 999288897c0437d4188e7aa1685541c2,
     type: 3}
+  defaultDropColor: {r: 0.58431375, g: 0.6431373, b: 0.49411768, a: 0.84313726}
+  defaultDropHighlightColor: {r: 0.60526323, g: 1, b: 0, a: 0.84313726}
+  defaultDropPressedColor: {r: 0.76246935, g: 0.9433962, b: 0.48504806, a: 0.84313726}
+  defaultDropSelectedColor: {r: 0.017354928, g: 0.735849, b: 0.2749856, a: 0.84313726}
+  defaultDropDisabledColor: {r: 0.40982932, g: 0.4528302, b: 0.34389463, a: 0.84313726}
+  dropImageColor: {r: 0.5912487, g: 0.9528302, b: 0.373042, a: 0.39215687}
+  graphicsDropColor: {r: 0.9245283, g: 0.9136515, b: 0, a: 0.84313726}
+  graphicsDropHighlightColor: {r: 1, g: 0.98823535, b: 0, a: 0.84313726}
+  graphicsDropPressedColor: {r: 1, g: 0.61723715, b: 0, a: 0.84313726}
+  graphicsDropSelectedColor: {r: 1, g: 0.8620171, b: 0, a: 0.84313726}
+  graphicsDropDisabledColor: {r: 0.5283019, g: 0.5220866, b: 0, a: 0.84313726}
+  dropImageGraphicsColor: {r: 1, g: 0.49922678, b: 0, a: 0.39215687}
+  defaultTextToggle: {r: 1, g: 1, b: 1, a: 1}
+  defaultCheckToggle: {r: 1, g: 1, b: 1, a: 1}
+  defaultToggleColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultToggleHighlightColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultTogglePressedColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultToggleSelectedColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultToggleDisabledColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultToggleImage: {fileID: -8210135552619096518, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  defaultToggleFontSize: 12
+  defaultToggleAlignment: 514
+  defaultToggleFontStyle: 1
+  menuTextToggle: {r: 0.9960785, g: 0.9960785, b: 0.9960785, a: 1}
+  menuCheckToggle: {r: 0, g: 0, b: 0, a: 1}
+  menuToggleColor: {r: 0.69803923, g: 0.5058824, b: 0.31764707, a: 1}
+  menuToggleHighlightColor: {r: 0.9150943, g: 0.6686988, b: 0.42733178, a: 1}
+  menuTogglePressedColor: {r: 1, g: 0.50000006, b: 0, a: 1}
+  menuToggleSelectedColor: {r: 1, g: 0.5019608, b: 0, a: 1}
+  menuToggleDisabledColor: {r: 0.8490566, g: 0.6811363, b: 0.5166429, a: 0.78431374}
+  menuToggleImage: {fileID: -6026020940594237414, guid: 999288897c0437d4188e7aa1685541c2,
+    type: 3}
+  menuToggleFontSize: 18
+  menuToggleAlignment: 514
+  menuToggleFontStyle: 1

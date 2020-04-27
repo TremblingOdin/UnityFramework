@@ -8,7 +8,7 @@ public class AudioController : MonoBehaviour
 
     private bool mute = false;
 
-    public float userVolume = 100;
+    private float userVolume = 100;
 
     private AudioClip dimChime;
     private AudioClip dim2NoteChime;
@@ -61,5 +61,16 @@ public class AudioController : MonoBehaviour
         }
 
         return mute;
+    }
+
+    /// <summary>
+    /// When sent a new Volume value update current volume value
+    /// </summary>
+    /// <param name="volume">New Volume Value</param>
+    /// <returns></returns>
+    public void ChangeVolume(float volume)
+    {
+        AudioListener.volume = volume;
+        userVolume = volume;
     }
 }

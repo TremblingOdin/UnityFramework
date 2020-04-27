@@ -26,11 +26,14 @@ public class FlexibleUIText : FlexibleUI
     {
         base.OnSkinUI();
 
+        if(dontChange)
+        {
+            return;
+        }
+
         tmp = GetComponent<TextMeshProUGUI>();
 
         fancyHappenings = transform.GetChild(0).GetComponent<Image>();
-
-        Debug.Log(tmp);
 
         switch(tt)
         {

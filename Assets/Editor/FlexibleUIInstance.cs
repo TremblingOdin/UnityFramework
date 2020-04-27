@@ -11,10 +11,22 @@ public class FlexibleUIInstance : Editor
         Create("Button");
     }
 
-    [MenuItem("GameObject/Flexible UI/Text", priority = 1)]
+    [MenuItem("GameObject/Flexible UI/Dropdown", priority = 1)]
+    public static void AddDropdown()
+    {
+        Create("Dropdown");
+    }
+
+    [MenuItem("GameObject/Flexible UI/Text", priority = 2)]
     public static void AddText()
     {
         Create("Text");
+    }
+
+    [MenuItem("GameObject/Flexible UI/Toggle", priority = 3)]
+    public static void AddToggle()
+    {
+        Create("Toggle");
     }
 
     static GameObject clickedObject;
