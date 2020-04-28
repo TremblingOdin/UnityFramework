@@ -4,13 +4,12 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Handles the logic of traveling through levels
 /// </summary>
-public class LevelController : MonoBehaviour
+public class LevelController : Controller
 {
-    public const GameTypeTitle title = GameTypeTitle.LEVEL;
     private int currentLevel;
     public bool paused;
 
-    private void Awake()
+    protected override void Awake()
     {
         paused = false;
         currentLevel = CurrentScene.buildIndex;
@@ -18,7 +17,10 @@ public class LevelController : MonoBehaviour
         {
             SetUpLevel();
         }
-        GameController.Instance.RegisterType(this, title, false);
+
+        title = GameTypeTitle.AUDIO;
+        base.Awake();
+
         EventService.Instance.RegisterEventHandler(EventType.Pause, PauseLevel);
         EventService.Instance.RegisterEventHandler(EventType.Home, LoadMainMenu);
     }

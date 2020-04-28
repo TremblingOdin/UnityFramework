@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioController : MonoBehaviour
+public class AudioController : Controller
 {
-    public const GameTypeTitle title = GameTypeTitle.AUDIO;
-
     private bool mute = false;
 
     private float userVolume = 100;
@@ -19,16 +17,25 @@ public class AudioController : MonoBehaviour
     public AudioClip DIM_CHIME { get { return this.dimChime; } }
     public AudioClip DIM_2NOTE_CHIME { get { return this.dim2NoteChime; } }
 
-    private void Awake()
+    protected override void Awake()
     {
-        GameController.Instance.RegisterType(this, title, false);
-
+        title = GameTypeTitle.AUDIO;
+        base.Awake();
     }
 
     private void Start()
     {
-        userVolume = (float)GameController.Instance.UserSettings[UserSetting.VOLUME];
-        GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA).gameObject.GetComponent<AudioSource>().Play();
+        if (GameController.Instance.UserSettings[UserSetting.VOLUME] as float? != null)
+        {
+            userVolume = (float)GameController.Instance.UserSettings[UserSetting.VOLUME];
+        } else
+        {
+            userVolume = .5f;
+        }
+        GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA)
+            .gameObject.GetComponent<AudioSource>().volume = userVolume;
+        GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA)
+            .gameObject.GetComponent<AudioSource>().Play();
         //Invoke("TrackChange", GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA).gameObject.GetComponent<AudioSource>().clip.length);
     }
 

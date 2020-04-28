@@ -7,7 +7,7 @@ using System.Collections;
 
 public enum GameTypeTitle
 {
-    AUDIO, CAMERA, LEVEL, KEYBOARD
+    AUDIO, CAMERA, LEVEL, KEYBOARD, NONE
 }
 
 public enum UserSetting

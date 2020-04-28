@@ -5,6 +5,7 @@ using UnityEditor;
 
 public class FlexibleUIInstance : Editor
 {
+    //UI Prefabse
     [MenuItem("GameObject/Flexible UI/Button", priority = 0)]
     public static void AddButton()
     {

@@ -2,11 +2,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Controller
 {
-    public const GameTypeTitle title = GameTypeTitle.CAMERA;
-
-
     [Tooltip("Game ToolTip HUD object")]
     [SerializeField]
     private GameObject gtView;
@@ -23,12 +20,13 @@ public class CameraController : MonoBehaviour
     }
 
 
-    private void Awake()
+    protected override void Awake()
     {
         this.CameraStart();
         cameraStart = new Vector2(this.transform.position.x, this.transform.position.y);
-        GameController.Instance.RegisterType(this, title, false);
 
+        title = GameTypeTitle.CAMERA;
+        base.Awake();
     }
 
     /// <summary>
