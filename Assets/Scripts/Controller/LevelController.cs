@@ -18,7 +18,7 @@ public class LevelController : Controller
             SetUpLevel();
         }
 
-        title = GameTypeTitle.AUDIO;
+        title = GameTypeTitle.LEVEL;
         base.Awake();
 
         EventService.Instance.RegisterEventHandler(EventType.Pause, PauseLevel);

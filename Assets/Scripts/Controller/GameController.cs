@@ -7,7 +7,7 @@ using System.Collections;
 
 public enum GameTypeTitle
 {
-    AUDIO, CAMERA, LEVEL, KEYBOARD, NONE
+    AUDIO, CAMERA, LEVEL, KEYBOARD, PLAYER, NONE
 }
 
 public enum UserSetting
@@ -21,37 +21,28 @@ public enum UserSetting
 [DisallowMultipleComponent]
 public sealed class GameController
 {
-    private readonly char delimiter = ':';
-
-    private static readonly GameController instance = new GameController();
+    public char Delimiter { get; } = ':';
 
     private Dictionary<GameTypeTitle, List<MonoBehaviour>> registeredTypes = new Dictionary<GameTypeTitle, List<MonoBehaviour>>();
-    private Hashtable userSettings = new Hashtable();
-    
-    public Hashtable UserSettings
-    {
-        get { return userSettings; }
-    }
+
+    public Dictionary<KeyCode, Player.UserInput> PlayControl { get; }
+
+    public Hashtable UserSettings { get; } = new Hashtable();
 
     //User settings file, it's going to get referenced a lot figured this would be the best place to put it
     public static readonly string userSettingsPath = "/playerSettings.dat";
+    public static readonly string controlSettingsPath = "controlSettings.dat";
 
     static GameController() { }
 
     private GameController()
     {
         foreach(UserSetting us in (UserSetting[])System.Enum.GetValues(typeof(UserSetting))) {
-            userSettings.Add(us, null);
+            UserSettings.Add(us, null);
         }
     }
 
-    public static GameController Instance
-    {
-        get
-        {
-            return instance;
-        }
-    }
+    public static GameController Instance { get; } = new GameController();
 
     /// <summary>
     /// Get a reference to the registered type requested. Returns first found.
@@ -102,7 +93,7 @@ public sealed class GameController
     public void RegisterType(MonoBehaviour mb, GameTypeTitle title, bool repeatable)
     {
         TypeInfo type = mb.GetType().GetTypeInfo();
-
+        
         if (this.registeredTypes.ContainsKey(title) && !repeatable)
         {
             Debug.LogWarning("[GameController] attempted to register duplicate keys for type: " + title);
@@ -147,6 +138,26 @@ public sealed class GameController
     }
 
     /// <summary>
+    /// Connects a KeyCode to a UserInput value and returns if it had to overwrite something
+    /// </summary>
+    /// <param name="KeyCode">The KeyCode to look for</param>
+    /// <param name="UserInput">The type of user input to execute</param>
+    /// <returns>Was a pre-existing value overwritten</returns>
+    public bool StorePlayerData(KeyCode kc, Player.UserInput ui)
+    {
+        if (PlayControl.ContainsKey(kc))
+        {
+            PlayControl[kc] = ui;
+            return true;
+        }
+        else
+        {
+            PlayControl.Add(kc, ui);
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Goes through it's usersettings dictionary and writes each enum and value to a instance in the usersetting file
     /// </summary>
     /// <returns></returns>
@@ -161,11 +172,11 @@ public sealed class GameController
 
             StreamWriter sw = new StreamWriter(Application.persistentDataPath + userSettingsPath);
 
-            foreach (UserSetting us in userSettings.Keys)
+            foreach (UserSetting us in UserSettings.Keys)
             {
-                if (userSettings[us] != null)
+                if (UserSettings[us] != null)
                 {
-                    sw.Write(Enum.GetName(typeof(UserSetting), us) + delimiter.ToString() + userSettings[us].ToString() + sw.NewLine);
+                    sw.Write(Enum.GetName(typeof(UserSetting), us) + Delimiter.ToString() + UserSettings[us].ToString() + sw.NewLine);
                 }
             }
 
@@ -198,12 +209,12 @@ public sealed class GameController
         string line;
         while ((line = sr.ReadLine()) != null)
         {
-            string settingType = line.Split(delimiter)[0];
+            string settingType = line.Split(Delimiter)[0];
             UserSetting tempUS = (UserSetting)Enum.Parse(typeof(UserSetting), settingType);
 
             if (Enum.IsDefined(typeof(UserSetting), tempUS))
             {
-                userSettings[tempUS] = line.Split(delimiter)[1];
+                UserSettings[tempUS] = line.Split(Delimiter)[1];
             }
         }
 

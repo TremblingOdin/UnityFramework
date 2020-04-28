@@ -1,20 +1,78 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System;
 using UnityEngine;
 
 public class KeyboardToEventHelper : MonoBehaviour
 {
     public const GameTypeTitle title = GameTypeTitle.KEYBOARD;
 
-    KeyCode pause;
+    public enum KeyFunction
+    {
+        ATTACK, INTERACT, JUMP, MOVEDOWN, MOVELEFT, MOVERIGHT, MOVEUP, PAUSE, NONE
+    }
+
+    private Dictionary<KeyCode, EventType> keyboardToEvent;
 
     private void Awake()
     {
-        StreamReader sr = new StreamReader(GameController.userSettingsPath);
+        StreamReader sr = new StreamReader(GameController.controlSettingsPath);
 
+        string line;
         //The organization of the file is:
         //variableName: Key
-        pause = codeMap[sr.ReadLine().Split(' ')[1]];
+        while ((line = sr.ReadLine()) != null)
+        {
+            string[] lineArr = line.Split(GameController.Instance.Delimiter);
+            if(Enum.Parse(typeof(KeyFunction), lineArr[0]) as KeyFunction? != null)
+            {
+                KeyFunction key = (KeyFunction)Enum.Parse(typeof(KeyFunction), lineArr[0]);
+
+                if (codeMap.ContainsKey(lineArr[1])) {
+                    switch (key)
+                    {
+                        //PlayerFunctional
+                        case KeyFunction.ATTACK:
+                            keyboardToEvent.Add(codeMap[lineArr[1]], EventType.Attack);
+                            GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.ATTACK);
+                            break;
+                        case KeyFunction.INTERACT:
+                            GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.INTERACT);
+                            break;
+                        case KeyFunction.JUMP:
+                            keyboardToEvent.Add(codeMap[lineArr[1]], EventType.Jump);
+                            GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.JUMP);
+                            break;
+                        case KeyFunction.MOVEDOWN:
+                            GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.MOVEDOWN);
+                            break;
+                        case KeyFunction.MOVELEFT:
+                            GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.MOVELEFT);
+                            break;
+                        case KeyFunction.MOVERIGHT:
+                            GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.MOVERIGHT);
+                            break;
+                        case KeyFunction.MOVEUP:
+                            GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.MOVEUP);
+                            break;
+
+                        //GameFunctional
+                        case KeyFunction.PAUSE:
+                            keyboardToEvent.Add(codeMap[lineArr[1]], EventType.Pause);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+
+            } else
+            {
+                continue;
+            }
+        }
+
+
         GameController.Instance.RegisterType(this, title, false);
     }
 
@@ -26,9 +84,12 @@ public class KeyboardToEventHelper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(pause))
+        foreach (KeyCode kc in keyboardToEvent.Keys)
         {
-            EventService.Instance.HandleEvents(EventType.Pause);
+            if (Input.GetKeyDown(kc))
+            {
+                EventService.Instance.HandleEvents(keyboardToEvent[kc]);
+            }
         }
 
         if (Input.GetMouseButtonDown(0))

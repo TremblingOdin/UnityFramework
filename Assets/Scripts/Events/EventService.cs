@@ -4,10 +4,12 @@ using UnityEngine;
 
 public enum EventType
 {
+    Attack,
     Click,
     EndLevel,
     GameOver,
     Home,
+    Jump,
     Mute,
     Pause,
     StartLevel
