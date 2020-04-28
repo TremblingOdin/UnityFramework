@@ -16,7 +16,9 @@ public class KeyboardToEventHelper : MonoBehaviour
 
     private void Awake()
     {
-        StreamReader sr = new StreamReader(GameController.controlSettingsPath);
+        keyboardToEvent = new Dictionary<KeyCode, EventType>();
+
+        StreamReader sr = new StreamReader(Application.persistentDataPath + GameController.controlSettingsPath);
 
         string line;
         //The organization of the file is:

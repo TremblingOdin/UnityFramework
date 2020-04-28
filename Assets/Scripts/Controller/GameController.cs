@@ -31,7 +31,7 @@ public sealed class GameController
 
     //User settings file, it's going to get referenced a lot figured this would be the best place to put it
     public static readonly string userSettingsPath = "/playerSettings.dat";
-    public static readonly string controlSettingsPath = "controlSettings.dat";
+    public static readonly string controlSettingsPath = "/controlSettings.dat";
 
     static GameController() { }
 
@@ -40,6 +40,8 @@ public sealed class GameController
         foreach(UserSetting us in (UserSetting[])System.Enum.GetValues(typeof(UserSetting))) {
             UserSettings.Add(us, null);
         }
+
+        PlayControl = new Dictionary<KeyCode, Player.UserInput>();
     }
 
     public static GameController Instance { get; } = new GameController();
@@ -158,6 +160,39 @@ public sealed class GameController
     }
 
     /// <summary>
+    /// Goes through it's PlayControl dictionary and writes each key and value to a line in the control setting file
+    /// </summary>
+    /// <returns>Success of the save</returns>
+    public bool SavePlayerData()
+    {
+        try
+        {
+            if (!File.Exists(Application.persistentDataPath + controlSettingsPath))
+            {
+                File.Create(Application.persistentDataPath + controlSettingsPath);
+            }
+
+            StreamWriter sw = new StreamWriter(Application.persistentDataPath + controlSettingsPath);
+
+            foreach (KeyCode key in PlayControl.Keys)
+            {
+                sw.Write(Enum.GetName(typeof(KeyboardToEventHelper.KeyFunction), PlayControl[key].InputToFunction()) 
+                    + Delimiter.ToString() 
+                    + Enum.GetName(typeof(KeyCode), key) + sw.NewLine);
+            }
+
+            sw.Close();
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Goes through it's usersettings dictionary and writes each enum and value to a instance in the usersetting file
     /// </summary>
     /// <returns></returns>
@@ -176,7 +211,9 @@ public sealed class GameController
             {
                 if (UserSettings[us] != null)
                 {
-                    sw.Write(Enum.GetName(typeof(UserSetting), us) + Delimiter.ToString() + UserSettings[us].ToString() + sw.NewLine);
+                    sw.Write(Enum.GetName(typeof(UserSetting), us) 
+                        + Delimiter.ToString() 
+                        + UserSettings[us].ToString() + sw.NewLine);
                 }
             }
 
