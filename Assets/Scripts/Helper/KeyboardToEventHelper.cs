@@ -42,7 +42,7 @@ public class KeyboardToEventHelper : MonoBehaviour
                             GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.INTERACT);
                             break;
                         case KeyFunction.JUMP:
-                            keyboardToEvent.Add(codeMap[lineArr[1]], EventType.Jump);
+                            //keyboardToEvent.Add(codeMap[lineArr[1]], EventType.Jump);
                             GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.JUMP);
                             break;
                         case KeyFunction.MOVEDOWN:

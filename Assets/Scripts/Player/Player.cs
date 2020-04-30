@@ -28,8 +28,8 @@ public class Player : MonoBehaviour
         interact = GameController.Instance.PlayControl;
         movement = movementSystem.LoadMovement(interact);
 
-        if(movement == Movement.MovementType.TOPDOWN && interact.ContainsValue(UserInput.JUMP)
-            || movement == Movement.MovementType.PLATFORMER && (interact.ContainsValue(UserInput.MOVEUP) || interact.ContainsValue(UserInput.MOVEDOWN)))
+        if(movement == Movement.MovementType.PLATFORMER && !interact.ContainsValue(UserInput.JUMP)
+            || movement == Movement.MovementType.TOPDOWN && !(interact.ContainsValue(UserInput.MOVEUP) || interact.ContainsValue(UserInput.MOVEDOWN)))
         {
             Debug.LogWarning("The Movement options don't agree with the movement type, please double check everything");
         }

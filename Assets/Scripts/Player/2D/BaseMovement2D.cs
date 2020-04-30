@@ -51,7 +51,6 @@ public class BaseMovement2D : Movement
                 }
             }
 
-
             GetComponent<Rigidbody2D>().velocity = movementVector * speed;
         } else
         {
