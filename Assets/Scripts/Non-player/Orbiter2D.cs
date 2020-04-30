@@ -5,6 +5,9 @@ using UnityEngine;
 public class Orbiter2D : MonoBehaviour
 {
     [SerializeField]
+    private GameObject ellipsePrefab;
+
+    [SerializeField]
     private float gravityConstant;
     public float GravityConstant { get { return gravityConstant; } }
 
@@ -28,41 +31,20 @@ public class Orbiter2D : MonoBehaviour
     public float DistanceToCenter { get; private set; }
     public bool Orbiting { get; set; }
 
-    [SerializeField]
-    private OrbitShape2D ellipse;
-    [SerializeField]
-    private OrbitState orbitState;
-
     public void Awake()
     {
-        ResetOrbit();
-
         GetComponent<Rigidbody2D>().drag = 0;
         GetComponent<Rigidbody2D>().gravityScale = 0;
         GetComponent<Rigidbody2D>().isKinematic = false;
 
         currentRotation = 0f;
 
-        if(center!=null)
+        if (center != null)
         {
             Vector3 distance3D = transform.position - center.position;
             DistanceToCenter = distance3D.magnitude;
             Orbiting = true;
         }
-
-        if(!ellipse)
-        {
-            GameObject ellipseGO = Instantiate(GameController.Instance.GetType<LevelController>(GameTypeTitle.LEVEL)
-                                    .GetPrefab(typeof(OrbitShape2D))) as GameObject;
-            ellipse = ellipseGO.GetComponent<OrbitShape2D>();
-        }
-
-        ellipse.SetShape(center.position, transform.position, apsisDistance, CircularOrbit);
-        orbitState.SetOrbit(startingAngle, this, ellipse);
-
-        transform.position = ellipse.GetPosition(startingAngle, center.position);
-
-        GetComponent<Rigidbody2D>().AddForce(orbitState.OrbitVelocity);
     }
 
     public void FixedUpdate()
@@ -79,26 +61,6 @@ public class Orbiter2D : MonoBehaviour
         this.center = center;
         Vector3 distance3D = transform.position - center.position;
         DistanceToCenter = distance3D.magnitude;
-        ResetOrbit();
-    }
-
-    /// <summary>
-    /// Resets the orbit information
-    /// </summary>
-    private void ResetOrbit()
-    {
-        if(!center)
-        {
-            return;
-        }
-
-        if (!ellipse) {
-            GameObject ellipseGO = Instantiate(GameController.Instance.GetType<LevelController>(GameTypeTitle.LEVEL)
-                                    .GetPrefab(typeof(OrbitShape2D))) as GameObject;
-            ellipse = ellipseGO.GetComponent<OrbitShape2D>();
-            ellipse.SetShape(center.position, transform.position, apsisDistance, CircularOrbit);
-            apsisDistance = ellipse.EndingApsis;
-        }
     }
 
     /// <summary>
@@ -118,27 +80,6 @@ public class Orbiter2D : MonoBehaviour
             Vector3 difference = transform.position - center.position;
             GetComponent<Rigidbody2D>().AddForce(
                 -difference.normalized * Speed * gravityConstant * Time.fixedDeltaTime / difference.sqrMagnitude);
-        }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (center == null)
-        {
-            return;
-        }
-
-        //This is to help visualize eveything with the renderer
-        if (!ellipse)
-        {
-            GameObject ellipseGO = Instantiate(GameController.Instance.GetType<LevelController>(GameTypeTitle.LEVEL)
-                                    .GetPrefab(typeof(OrbitShape2D))) as GameObject;
-            ellipse = ellipseGO.GetComponent<OrbitShape2D>();
-        }
-        //0 apsis leads to a FF7 ending, start with a circular orbit
-        if (apsisDistance == 0)
-        {
-            apsisDistance = ellipse.StartingApsis;
         }
     }
 }

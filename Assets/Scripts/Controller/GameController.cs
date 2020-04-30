@@ -37,7 +37,7 @@ public sealed class GameController
 
     private GameController()
     {
-        foreach(UserSetting us in (UserSetting[])System.Enum.GetValues(typeof(UserSetting))) {
+        foreach(UserSetting us in (UserSetting[])Enum.GetValues(typeof(UserSetting))) {
             UserSettings.Add(us, null);
         }
 

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -8,7 +10,7 @@ public class LevelController : Controller
 {
     private int currentLevel;
     public bool paused;
-
+        
     protected override void Awake()
     {
         paused = false;
@@ -76,6 +78,9 @@ public class LevelController : Controller
         
     }
 
+    /// <summary>
+    /// Stops time scale and opens pause menu
+    /// </summary>
     public void PauseLevel()
     {
         if (!paused) {
