@@ -12,6 +12,8 @@ public enum EventType
     Jump,
     Mute,
     Pause,
+    RotateLeft,
+    RotateRight,
     StartLevel
 };
 

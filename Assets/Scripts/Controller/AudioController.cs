@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioController : Controller
 {
     private bool mute = false;
 
     private float userVolume = 100;
+
+    public Dictionary<int, AudioData> AudioLibrary { get; private set; }
 
     public static AudioController Instance { get; private set; } = new AudioController();
     public AudioHelper AudioObject { get; private set; }
@@ -19,32 +22,24 @@ public class AudioController : Controller
         }
 
         title = GameTypeTitle.AUDIO;
+        AudioLibrary = new Dictionary<int, AudioData>();
     }
 
-    private void Start()
+    protected override void SceneLoaded(Scene s, LoadSceneMode lsm)
     {
         if (GameController.Instance.UserSettings[UserSetting.VOLUME] as float? != null)
         {
             userVolume = (float)GameController.Instance.UserSettings[UserSetting.VOLUME];
-        } else
+        }
+        else
         {
             userVolume = .5f;
         }
         CameraController.Instance.Cam.GetComponent<AudioSource>().volume = userVolume;
         CameraController.Instance.Cam.GetComponent<AudioSource>().Play();
-        //Invoke("TrackChange", GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA).gameObject.GetComponent<AudioSource>().clip.length);
-    }
 
-    /// <summary>
-    /// Change the intro track to the looping track
-    /// </summary>
-    private void TrackChange()
-    {
-        CameraController.Instance.Cam.GetComponent<AudioSource>().Stop();
-        CameraController.Instance.Cam.GetComponent<AudioSource>().clip = AudioObject.INTROLESS_LEVEL_SONG;
-        Debug.Log(CameraController.Instance.Cam.GetComponent<AudioSource>().clip);
-        CameraController.Instance.Cam.GetComponent<AudioSource>().loop = true;
-        CameraController.Instance.Cam.GetComponent<AudioSource>().Play();
+        Debug.Log(AudioObject);
+        Debug.Log("AudioController Loaded");
     }
 
     /// <summary>
@@ -55,12 +50,14 @@ public class AudioController : Controller
     {
         mute = !mute;
         if (mute) {
+            CameraController.Instance.Cam.GetComponent<AudioSource>().Pause();
             AudioListener.pause = mute;
             AudioListener.volume = 0;
         } else
         {
             AudioListener.pause = mute;
             AudioListener.volume = userVolume;
+            CameraController.Instance.Cam.GetComponent<AudioSource>().UnPause();
         }
 
         return mute;

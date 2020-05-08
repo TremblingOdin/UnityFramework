@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildController : MonoBehaviour
+public class BuildController : Controller
 {
-    public static BuildController Instance { get; private set; }
-    public const GameTypeTitle title = GameTypeTitle.BUILD;
+    public static BuildController Instance { get; private set; } = new BuildController();
+   
+    public Blueprint ToBuild { get; private set; }
+    public Buildable BuildItem { get; private set; }
 
-    private Blueprint toBuild;
-    public Blueprint ToBuild { get { return toBuild; } }
+    public GameObject UIObject { get; set; }
 
     public bool CanBuild { get; set; }
 
-    void Awake()
+    public Color DisabledColor { get; set; }
+
+    public Quaternion StoredRotation { get; set; }
+
+    BuildController()
     {
         if(Instance != null)
         {
@@ -21,7 +26,10 @@ public class BuildController : MonoBehaviour
         }
 
         Instance = this;
-        GameController.Instance.RegisterType(this, title, false);
+
+        title = GameTypeTitle.BUILD;
+        CanBuild = false;
+
     }
 
     /// <summary>
@@ -31,7 +39,8 @@ public class BuildController : MonoBehaviour
     /// <param name="b">Item to examine</param>
     public void SelectItem(Blueprint b)
     {
-        toBuild = b;
+        ToBuild = b;
+        BuildItem = b.prefab.GetComponent<Buildable>();
     }
 
     /// <summary>
@@ -39,6 +48,16 @@ public class BuildController : MonoBehaviour
     /// </summary>
     public void DeselectItem()
     {
-        toBuild = null;
+        ToBuild = null;
+        BuildItem = null;
+    }
+
+    /// <summary>
+    /// If anything special needs to happen to the build controller after an object is built
+    /// Put it in here
+    /// </summary>
+    public void Built()
+    {
+
     }
 }

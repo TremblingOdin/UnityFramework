@@ -124,10 +124,11 @@ public sealed class GameController
 
     /// <summary>
     /// Removes all registered types
+    /// Because the essentials were refactored to be singletons no need to worry about unregistering them
     /// </summary>
     public void UnregisterTypes()
     {
-        this.registeredTypes.Clear();
+        registeredTypes.Clear();
     }
 
     /// <summary>
@@ -136,7 +137,7 @@ public sealed class GameController
     /// <returns>If type was registered</returns>
     public bool HasType(GameTypeTitle title)
     {
-        return this.registeredTypes.ContainsKey(title);
+        return registeredTypes.ContainsKey(title);
     }
 
     /// <summary>

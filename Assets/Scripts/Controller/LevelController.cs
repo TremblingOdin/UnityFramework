@@ -1,7 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+
+/// <summary>
+/// Menu types to assign to one's self
+/// </summary>
+public enum Menus
+{
+    Main, Pause, GameOver
+}
+
+/// <summary>
+/// Changes from game to game to hold vital and persistent game data
+/// </summary>
+public struct GameData { }
 
 /// <summary>
 /// Handles the logic of traveling through levels
@@ -12,6 +23,9 @@ public class LevelController : Controller
     public bool Paused { get; set; } = false;
 
     public static LevelController Instance { get; private set; } = new LevelController();
+
+    public GameObject PauseMenu { get; set; }
+    public GameObject GameOverMenu { get; set; }
 
     private LevelController()
     {
@@ -31,6 +45,7 @@ public class LevelController : Controller
 
     protected override void SceneLoaded(Scene s, LoadSceneMode lsm)
     {
+        Debug.Log("loaded");
         SetUpLevel();
     }
 
@@ -48,7 +63,7 @@ public class LevelController : Controller
     /// </summary>
     public void LoadMainMenu()
     {
-        LoadScene(0);
+        LoadScene(0, true);
     }
 
     /// <summary>
@@ -56,16 +71,19 @@ public class LevelController : Controller
     /// TODO: create copy as scriptable object maybe
     /// </summary>
     /// <param name="buildIndex">Index of the scene according to build settings</param>
-    public void LoadScene(int buildIndex)
+    public void LoadScene(int buildIndex, bool newMusic)
     {
         EventService.Instance.HandleEvents(EventType.StartLevel);
+
+        if (newMusic)
+        {
+            AudioController.Instance.AudioObject.UnInvoke();
+        }
+
         GameController.Instance.UnregisterTypes();
         SceneManager.LoadScene(buildIndex);
 
-        if (buildIndex != 0)
-        {
-            SetUpLevel();
-        }
+        SetUpLevel();
     }
 
     /// <summary>

@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class CameraController : Controller
 {
     private GameObject gtView;
-
     private Vector2 cameraStart;
 
     public Camera Cam { get; private set; }
@@ -26,16 +25,7 @@ public class CameraController : Controller
 
     protected override void SceneLoaded(Scene s, LoadSceneMode lsm)
     {
-        CameraStart();
         Cam = GameObject.FindObjectOfType<Camera>();
-    }
-
-    /// <summary>
-    /// Initialize the player view to the determined starting camera
-    /// </summary>
-    public void CameraStart()
-    {
-       
     }
 
     /// <summary>
