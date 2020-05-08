@@ -82,9 +82,12 @@ public class BasePlatformer2D : Movement
             }
 
             strokeCounter = strokeTime;
+            Debug.Log(GetComponent<Rigidbody2D>().velocity);
+            GetComponent<Rigidbody2D>().velocity *= .2f;
+
+            Debug.Log(GetComponent<Rigidbody2D>().velocity);
 
             canSwim = true;
-            Debug.Log("Entered the water");
         }
     }
 
@@ -94,7 +97,6 @@ public class BasePlatformer2D : Movement
         {
             strokeCounter = strokeTime;
             canSwim = false;
-            Debug.Log("Left the water");
         }
     }
 
@@ -139,7 +141,7 @@ public class BasePlatformer2D : Movement
                         break;
                     case Player.UserInput.JUMP:
                         if (canMove)
-                            movementVector += Vector2.up;
+                            movementVector += Vector2.up * 2;
                         break;
                     default:
                         Debug.Log("[BasePlatformer2D] Unhandled movement option: " + System.Enum.GetName(typeof(Player.UserInput), ui));
@@ -151,7 +153,7 @@ public class BasePlatformer2D : Movement
         if (movementVector != Vector2.zero && strokeCounter++ >= strokeTime)
         {
             strokeCounter = 0;
-            GetComponent<Rigidbody2D>().AddForce(movementVector * swimDampen);
+            GetComponent<Rigidbody2D>().AddForce(movementVector * swimDampen, ForceMode2D.Impulse);
         }
     }
 

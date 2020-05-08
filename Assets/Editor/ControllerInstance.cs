@@ -3,25 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class ControllerInstance : MonoBehaviour
+public class HelperInstance : MonoBehaviour
 {
     //Controllers
-    [MenuItem("GameObject/Controller/Level Controller", priority = 0)]
+    [MenuItem("GameObject/Helpers/Keyboard To Event Helper", priority = 0)]
     public static void AddLevelController()
     {
-        Create("Controller/LevelController", "LevelController");
+        Create("Helpers/KeyboardHelper", "Keh");
     }
 
-    [MenuItem("GameObject/Controller/Audio Controller", priority = 1)]
+    [MenuItem("GameObject/Helpers/Audio Helper", priority = 1)]
     public static void AddAudioController()
     {
-        Create("Controller/AudioController", "AudioController");
-    }
-
-    [MenuItem("GameObject/Controller/Camera Controller", priority = 2)]
-    public static void AddCameraController()
-    {
-        Create("Controller/CameraController", "CameraController");
+        Create("Helpers/AudioHelper", "AH!");
     }
 
     static GameObject clickedObject;
