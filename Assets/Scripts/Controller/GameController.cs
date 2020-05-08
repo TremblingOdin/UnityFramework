@@ -33,6 +33,8 @@ public sealed class GameController
     public static readonly string userSettingsPath = "/playerSettings.dat";
     public static readonly string controlSettingsPath = "/controlSettings.dat";
 
+    public static GameController Instance { get; } = new GameController();
+
     static GameController() { }
 
     private GameController()
@@ -43,8 +45,6 @@ public sealed class GameController
 
         PlayControl = new Dictionary<KeyCode, Player.UserInput>();
     }
-
-    public static GameController Instance { get; } = new GameController();
 
     /// <summary>
     /// Get a reference to the registered type requested. Returns first found.

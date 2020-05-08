@@ -1,25 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine.SceneManagement;
 
-public class Controller : MonoBehaviour
+public class Controller
 {
     protected GameTypeTitle title = GameTypeTitle.NONE;
     
-    protected virtual void Awake()
+
+    protected Controller() { }
+
+    /// <summary>
+    /// When the enabled add scene listener
+    /// </summary>
+    protected virtual void OnEnable()
     {
-        GameController.Instance.RegisterType(this, title, false);
-    }
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        SceneManager.sceneLoaded += SceneLoaded;
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// For singletons this replaces Start
+    /// </summary>
+    protected virtual void SceneLoaded(Scene s, LoadSceneMode lsm)
     {
-        
+
     }
 }

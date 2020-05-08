@@ -16,11 +16,16 @@ public class Player : MonoBehaviour
     private Movement movementSystem;
     private Movement.MovementType movement;
 
+    public float DefaultGravity { get; set; }
+    public float DefaultAngularDrag { get; set; }
+
     protected Dictionary<KeyCode, UserInput> interact;
 
     protected virtual void Awake()
     {
         GameController.Instance.RegisterType(this, title, true);
+        DefaultGravity = GetComponent<Rigidbody2D>().gravityScale;
+        DefaultAngularDrag = GetComponent<Rigidbody2D>().angularDrag;
     }
 
     protected virtual void Start()

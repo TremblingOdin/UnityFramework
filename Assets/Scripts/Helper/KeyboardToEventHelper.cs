@@ -76,11 +76,7 @@ public class KeyboardToEventHelper : MonoBehaviour
 
 
         GameController.Instance.RegisterType(this, title, false);
-    }
-
-    private void Start()
-    {
-
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame

@@ -1,32 +1,33 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class CameraController : Controller
 {
-    [Tooltip("Game ToolTip HUD object")]
-    [SerializeField]
     private GameObject gtView;
 
     private Vector2 cameraStart;
 
+    public Camera Cam { get; private set; }
+    public static CameraController Instance { get; private set; } = new CameraController();
 
-    [SerializeField]
-    private Camera cam;
-
-    public Camera Cam
+    private CameraController()
     {
-        get { return cam; }
+        if(Instance != null)
+        {
+            return;
+        }
+
+        Instance = this;
+        title = GameTypeTitle.CAMERA;
+
     }
 
-
-    protected override void Awake()
+    protected override void SceneLoaded(Scene s, LoadSceneMode lsm)
     {
-        this.CameraStart();
-        cameraStart = new Vector2(this.transform.position.x, this.transform.position.y);
-
-        title = GameTypeTitle.CAMERA;
-        base.Awake();
+        CameraStart();
+        Cam = GameObject.FindObjectOfType<Camera>();
     }
 
     /// <summary>
@@ -43,7 +44,7 @@ public class CameraController : Controller
     private void Clicked()
     {
         RaycastHit2D hit;
-        hit = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        hit = Physics2D.Raycast(Cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         if (hit.collider != null)
         {
             if(hit.collider.GetComponent<Clickable>() != null)

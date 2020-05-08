@@ -8,19 +8,17 @@ public class AudioController : Controller
 
     private float userVolume = 100;
 
-    private AudioClip dimChime;
-    private AudioClip dim2NoteChime;
+    public static AudioController Instance { get; private set; } = new AudioController();
+    public AudioHelper AudioObject { get; private set; }
 
-    [SerializeField]
-    private AudioClip introlessLevelSong;
-
-    public AudioClip DIM_CHIME { get { return this.dimChime; } }
-    public AudioClip DIM_2NOTE_CHIME { get { return this.dim2NoteChime; } }
-
-    protected override void Awake()
+    private AudioController()
     {
+        if(Instance != null)
+        {
+            return;
+        }
+
         title = GameTypeTitle.AUDIO;
-        base.Awake();
     }
 
     private void Start()
@@ -32,10 +30,8 @@ public class AudioController : Controller
         {
             userVolume = .5f;
         }
-        GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA)
-            .gameObject.GetComponent<AudioSource>().volume = userVolume;
-        GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA)
-            .gameObject.GetComponent<AudioSource>().Play();
+        CameraController.Instance.Cam.GetComponent<AudioSource>().volume = userVolume;
+        CameraController.Instance.Cam.GetComponent<AudioSource>().Play();
         //Invoke("TrackChange", GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA).gameObject.GetComponent<AudioSource>().clip.length);
     }
 
@@ -44,11 +40,11 @@ public class AudioController : Controller
     /// </summary>
     private void TrackChange()
     {
-        GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA).gameObject.GetComponent<AudioSource>().Stop();
-        GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA).gameObject.GetComponent<AudioSource>().clip = introlessLevelSong;
-        Debug.Log(GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA).gameObject.GetComponent<AudioSource>().clip);
-        GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA).gameObject.GetComponent<AudioSource>().loop = true;
-        GameController.Instance.GetType<CameraController>(GameTypeTitle.CAMERA).gameObject.GetComponent<AudioSource>().Play();
+        CameraController.Instance.Cam.GetComponent<AudioSource>().Stop();
+        CameraController.Instance.Cam.GetComponent<AudioSource>().clip = AudioObject.INTROLESS_LEVEL_SONG;
+        Debug.Log(CameraController.Instance.Cam.GetComponent<AudioSource>().clip);
+        CameraController.Instance.Cam.GetComponent<AudioSource>().loop = true;
+        CameraController.Instance.Cam.GetComponent<AudioSource>().Play();
     }
 
     /// <summary>
@@ -79,5 +75,23 @@ public class AudioController : Controller
     {
         AudioListener.volume = volume;
         userVolume = volume;
+    }
+
+    /// <summary>
+    /// Sets the AudioHelper to the provided object and returns if successful or not
+    /// </summary>
+    /// <param name="link">AudioHelper to be linked</param>
+    /// <returns>Success of the linkage</returns>
+    public bool LinkAudioObject(AudioHelper link)
+    {
+        AudioObject = link;
+
+        if(AudioObject == link)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 }

@@ -9,22 +9,29 @@ using UnityEngine.SceneManagement;
 public class LevelController : Controller
 {
     private int currentLevel;
-    public bool paused;
-        
-    protected override void Awake()
+    public bool Paused { get; set; } = false;
+
+    public static LevelController Instance { get; private set; } = new LevelController();
+
+    private LevelController()
     {
-        paused = false;
-        currentLevel = CurrentScene.buildIndex;
-        if(currentLevel != 0)
+        if(Instance != null)
         {
-            SetUpLevel();
+            return;
         }
 
         title = GameTypeTitle.LEVEL;
-        base.Awake();
+
 
         EventService.Instance.RegisterEventHandler(EventType.Pause, PauseLevel);
         EventService.Instance.RegisterEventHandler(EventType.Home, LoadMainMenu);
+
+        currentLevel = CurrentScene.buildIndex;
+    }
+
+    protected override void SceneLoaded(Scene s, LoadSceneMode lsm)
+    {
+        SetUpLevel();
     }
 
     /// <summary>
@@ -83,13 +90,13 @@ public class LevelController : Controller
     /// </summary>
     public void PauseLevel()
     {
-        if (!paused) {
-            paused = true;
+        if (!Paused) {
+            Paused = true;
             Time.timeScale = 0;
             //TODO: create pause menu
-        }  else if (paused)
+        }  else if (Paused)
         {
-            paused = false;
+            Paused = false;
             Time.timeScale = 1;
             //TODO: remove pause menu
         }

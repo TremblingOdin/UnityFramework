@@ -79,7 +79,7 @@ public class SettingsMenu : MonoBehaviour
     public void SetVolume(float volume)
     {
         userVolume = volume;
-        GameController.Instance.GetType<AudioController>(GameTypeTitle.AUDIO).ChangeVolume(userVolume);
+        AudioController.Instance.ChangeVolume(userVolume);
     }
 
     public void SetQuality(int qualityIndex)
