@@ -22,21 +22,15 @@ public enum EventType
 /// </summary>
 public class EventService
 {
-    private static readonly EventService instance = new EventService();
     private Dictionary<EventType, List<Action>> eventHandlers = new Dictionary<EventType, List<Action>>();
+    private List<Type> essentials = new List<Type>();
 
     //Don't mark typr as beforefieldinit
     static EventService() { }
 
     private EventService() { }
 
-    public static EventService Instance
-    {
-        get
-        {
-            return instance;
-        }
-    }
+    public static EventService Instance { get; private set; } = new EventService();
 
     /// <summary>
     /// Adds the action or function to be called when given event occurs.
@@ -51,6 +45,15 @@ public class EventService
         }
 
         eventHandlers[e].Add(a);
+    }
+
+    /// <summary>
+    /// Only call this method if the type will always be present
+    /// </summary>
+    /// <param name="t">The type to register as essential</param>
+    public void RegisterEssential(Type t)
+    {
+        essentials.Add(t);
     }
 
     /// <summary>
@@ -96,5 +99,42 @@ public class EventService
     public void ClearEvents(EventType x)
     {
         eventHandlers.Remove(x);
+    }
+
+    /// <summary>
+    /// Checks if the event's reflected type belongs to a singleton or not then removes it if so
+    /// </summary>
+    public void ClearNonessentialEvents()
+    {
+        foreach (EventType e in this.eventHandlers.Keys)
+        {
+            bool essential = false;
+            foreach (Action a in this.eventHandlers[e])
+            {
+                if (essentials.Contains(a.Method.ReflectedType))
+                {
+                    essential = true;
+                }
+                else
+                {
+                    this.eventHandlers[e].Remove(a);
+                }
+            }
+
+            if (!essential)
+                eventHandlers.Remove(e);
+        }
+    }
+
+    // Don't want paint myself into a corner with the above
+    // Avoid calling this
+    /// <summary>
+    /// Remove the type from the list
+    /// </summary>
+    /// <param name="t">The type to be removed from essentials</param>
+    public void RemoveEssential(Type t)
+    {
+        if (essentials.Contains(t))
+            essentials.Remove(t);
     }
 }
