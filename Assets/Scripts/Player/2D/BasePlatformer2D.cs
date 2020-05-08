@@ -9,22 +9,10 @@ public class BasePlatformer2D : Movement
     private bool isGrounded;
     [SerializeField]
     private bool canJump;
-    [SerializeField]
-    private bool canSwim;
-
 
     private bool isFalling;
     public bool IsGrounded { get { return isGrounded; } }
     public bool CanJump { get { return canJump; } }
-    public bool CanSwim { get { return canSwim; } }
-
-    [SerializeField]
-    private int strokeTime;
-    private int strokeCounter;
-
-    [SerializeField]
-    private float swimDampen;
-    public float SwimDampen { get { return swimDampen; } set { swimDampen = value; } }
 
     [SerializeField]
     private float jumpForce;
@@ -32,8 +20,6 @@ public class BasePlatformer2D : Movement
 
     [SerializeField]
     private string groundingTag;
-    [SerializeField]
-    private string waterTag;
 
     [SerializeField]
     private string walkForwardAnimationID;
@@ -48,6 +34,10 @@ public class BasePlatformer2D : Movement
         isGrounded = true;
         canJump = true;
         isFalling = false;
+
+        EventService.Instance.RegisterEssential(GetType());
+        EventService.Instance.RegisterEventHandler(EventType.StartSwim, DisableMovement);
+        EventService.Instance.RegisterEventHandler(EventType.StopSwim, StartMovement);
 
         //Player Object will function similar to singleton
         DontDestroyOnLoad(gameObject);
@@ -72,89 +62,15 @@ public class BasePlatformer2D : Movement
         }
     }
 
-    protected void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == waterTag)
-        {
-            if(other.gameObject.GetComponent<Liquid2D>().InstaDeath)
-            {
-                //TODO: kill character
-            }
-
-            strokeCounter = strokeTime;
-            Debug.Log(GetComponent<Rigidbody2D>().velocity);
-            GetComponent<Rigidbody2D>().velocity *= .2f;
-
-            Debug.Log(GetComponent<Rigidbody2D>().velocity);
-
-            canSwim = true;
-        }
-    }
-
-    protected void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.tag == waterTag)
-        {
-            strokeCounter = strokeTime;
-            canSwim = false;
-        }
-    }
-
     //Fixed Update for movement for consistency
-    protected void FixedUpdate()
+    protected void Update()
     {
         if (LevelController.Instance.Paused)
         {
             return;
         }
 
-        if(canSwim)
-        {
-            UnderWater();
-        } else
-        {
-            Platforming();
-        }
-    }
-
-    /// <summary>
-    /// Handle the movement for when the character is underwater
-    /// </summary>
-    private void UnderWater()
-    {
-
-        Vector2 movementVector = Vector2.zero;
-
-        foreach(Player.UserInput ui in movement.Keys)
-        {
-            if(movement[ui] != null && Input.GetKey((KeyCode)movement[ui]))
-            {
-                switch(ui)
-                {
-                    case Player.UserInput.MOVERIGHT:
-                        if (canMove)
-                            movementVector += Vector2.right;
-                        break;
-                    case Player.UserInput.MOVELEFT:
-                        if (canMove)
-                            movementVector += Vector2.left;
-                        break;
-                    case Player.UserInput.JUMP:
-                        if (canMove)
-                            movementVector += Vector2.up * 2;
-                        break;
-                    default:
-                        Debug.Log("[BasePlatformer2D] Unhandled movement option: " + System.Enum.GetName(typeof(Player.UserInput), ui));
-                        break;
-                }
-            }
-        }
-
-        if (movementVector != Vector2.zero && strokeCounter++ >= strokeTime)
-        {
-            strokeCounter = 0;
-            GetComponent<Rigidbody2D>().AddForce(movementVector * swimDampen, ForceMode2D.Impulse);
-        }
+        Platforming();        
     }
 
     /// <summary>
@@ -172,20 +88,20 @@ public class BasePlatformer2D : Movement
                 switch (ui)
                 {
                     case Player.UserInput.MOVERIGHT:
-                        if (canMove)
+                        if (canMove && HorizontalMove)
                             movementVector += Vector2.right;
                         break;
                     case Player.UserInput.MOVELEFT:
-                        if (canMove)
+                        if (canMove && HorizontalMove)
                             movementVector += Vector2.left;
                         break;
                     case Player.UserInput.JUMP:
-                        if (canJump)
+                        if (canJump && VerticalMove)
                             jumpVector += Vector2.up;
                         break;
                     default:
-                        Debug.Log("[BasePlatformer2D] Unhandled movement option: " + System.Enum.GetName(typeof(Player.UserInput), ui));
                         break;
+
                 }
             }
         }
@@ -193,7 +109,7 @@ public class BasePlatformer2D : Movement
         if (movementVector != Vector2.zero)
         {
             GetComponent<Rigidbody2D>().velocity = movementVector * speed + new Vector2(0,GetComponent<Rigidbody2D>().velocity.y);
-        } else
+        } else if (HorizontalMove && VerticalMove)
         {
             GetComponent<Rigidbody2D>().velocity = 
                     new Vector2(0, GetComponent<Rigidbody2D>().velocity.y);

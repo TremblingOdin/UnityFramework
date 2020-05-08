@@ -13,6 +13,8 @@ public static class EnumHelper
         {
             case KeyboardToEventHelper.KeyFunction.ATTACK:
                 return Player.UserInput.ATTACK;
+            case KeyboardToEventHelper.KeyFunction.DASH:
+                return Player.UserInput.DASH;
             case KeyboardToEventHelper.KeyFunction.INTERACT:
                 return Player.UserInput.INTERACT;
             case KeyboardToEventHelper.KeyFunction.JUMP:
@@ -42,6 +44,8 @@ public static class EnumHelper
         {
             case Player.UserInput.ATTACK:
                 return KeyboardToEventHelper.KeyFunction.ATTACK;
+            case Player.UserInput.DASH:
+                return KeyboardToEventHelper.KeyFunction.DASH;
             case Player.UserInput.INTERACT:
                 return KeyboardToEventHelper.KeyFunction.INTERACT;
             case Player.UserInput.JUMP:
@@ -55,8 +59,41 @@ public static class EnumHelper
             case Player.UserInput.MOVEUP:
                 return KeyboardToEventHelper.KeyFunction.MOVEUP;
             default:
-                Debug.Log("[Enum Helper] cannot handle UserInput value: " + value);
                 return KeyboardToEventHelper.KeyFunction.NONE;
+        }
+    }
+
+    /// <summary>
+    /// Converts to UserInput
+    /// Many Upgrades have no functionality so in that case return null
+    /// </summary>
+    /// <param name="value">Upgrade to convert</param>
+    /// <returns>Returns the corresponding Input for an UpgradeType</returns>
+    public static Player.UserInput? UpgradeToInput(this UpgradeType value)
+    {
+        switch(value)
+        {
+            case UpgradeType.DASH:
+                return Player.UserInput.DASH;
+            default:
+                return null;
+        }
+    }
+
+    /// <summary>
+    /// Converts to UpgradeType
+    /// Not all movements are linked to an upgrade so in that case return null
+    /// </summary>
+    /// <param name="value">Input to convert</param>
+    /// <returns>Returns the corresponding UpgradeType</returns>
+    public static UpgradeType? InputToUpgrade(this Player.UserInput? value)
+    {
+        switch (value)
+        {
+            case Player.UserInput.DASH:
+                return UpgradeType.DASH;
+            default:
+                return null;
         }
     }
 }

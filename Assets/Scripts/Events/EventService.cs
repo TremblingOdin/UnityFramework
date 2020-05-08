@@ -10,11 +10,17 @@ public enum EventType
     GameOver,
     Home,
     Jump,
+    MoveRight,
+    MoveLeft,
+    MoveUp,
+    MoveDown,
     Mute,
     Pause,
     RotateLeft,
     RotateRight,
-    StartLevel
+    StartLevel,
+    StartSwim,
+    StopSwim
 };
 
 /// <summary>

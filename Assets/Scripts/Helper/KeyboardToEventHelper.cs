@@ -9,7 +9,7 @@ public class KeyboardToEventHelper : MonoBehaviour
 
     public enum KeyFunction
     {
-        ATTACK, INTERACT, JUMP, MOVEDOWN, MOVELEFT, MOVERIGHT, MOVEUP, PAUSE, NONE
+        ATTACK, DASH, INTERACT, JUMP, MOVEDOWN, MOVELEFT, MOVERIGHT, MOVEUP, PAUSE, NONE
     }
 
     private Dictionary<KeyCode, EventType> keyboardToEvent;
@@ -37,6 +37,9 @@ public class KeyboardToEventHelper : MonoBehaviour
                         case KeyFunction.ATTACK:
                             keyboardToEvent.Add(codeMap[lineArr[1]], EventType.Attack);
                             GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.ATTACK);
+                            break;
+                        case KeyFunction.DASH:
+                            GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.DASH);
                             break;
                         case KeyFunction.INTERACT:
                             GameController.Instance.StorePlayerData(codeMap[lineArr[1]], Player.UserInput.INTERACT);
