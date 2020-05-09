@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -10,22 +11,20 @@ public enum Menus
 }
 
 /// <summary>
-/// Changes from game to game to hold vital and persistent game data
-/// </summary>
-public struct GameData { }
-
-/// <summary>
 /// Handles the logic of traveling through levels
 /// </summary>
 public class LevelController : Controller
 {
-    private int currentLevel;
+    public int CurrentLevel { get; private set; }
+
     public bool Paused { get; set; } = false;
 
     public static LevelController Instance { get; private set; } = new LevelController();
 
     public GameObject PauseMenu { get; set; }
     public GameObject GameOverMenu { get; set; }
+
+    public GameData PlayerState;
 
     private LevelController()
     {
@@ -36,11 +35,15 @@ public class LevelController : Controller
 
         title = GameTypeTitle.LEVEL;
 
-
         EventService.Instance.RegisterEventHandler(EventType.Pause, PauseLevel);
         EventService.Instance.RegisterEventHandler(EventType.Home, LoadMainMenu);
 
-        currentLevel = CurrentScene.buildIndex;
+        //JunkData to initiate the gameData
+        PlayerState = new GameData();
+
+        PlayerState.Upgrades = new Dictionary<UpgradeType, int>();
+
+        CurrentLevel = CurrentScene.buildIndex;
     }
 
     protected override void SceneLoaded(Scene s, LoadSceneMode lsm)

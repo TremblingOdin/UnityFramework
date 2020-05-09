@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     public bool CanSwim { get; private set; }
 
     [SerializeField]
-    private PlatformerSpecials platformerSpecials;
+    private SpecialsManager platformerSpecials;
 
     protected Dictionary<KeyCode, UserInput> interact;
 

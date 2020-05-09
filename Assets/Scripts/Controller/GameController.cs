@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System;
 using UnityEngine;
-using System.Collections;
 
 public enum GameTypeTitle
 {
@@ -22,6 +22,11 @@ public enum UserSetting
 public sealed class GameController
 {
     public char Delimiter { get; } = ':';
+    public char Segmenter { get; } = ',';
+    public char BeginGroup { get; } = '[';
+    public char EndGroup { get; } = ']';
+    public char BeginClass { get; } = '{';
+    public char EndClass { get; } = '}';
 
     private Dictionary<GameTypeTitle, List<MonoBehaviour>> registeredTypes = new Dictionary<GameTypeTitle, List<MonoBehaviour>>();
 
@@ -32,6 +37,8 @@ public sealed class GameController
     //User settings file, it's going to get referenced a lot figured this would be the best place to put it
     public static readonly string userSettingsPath = "/playerSettings.dat";
     public static readonly string controlSettingsPath = "/controlSettings.dat";
+    public static readonly string gameDataPath = "/player_profile";
+    public static readonly string datafileEnding = ".dat";
 
     public static GameController Instance { get; } = new GameController();
 
@@ -258,5 +265,59 @@ public sealed class GameController
 
         return true;
         
+    }
+
+    /// <summary>
+    /// Takes aspects of the game state and saves them
+    /// Stores:
+    ///     CombatSystem
+    ///         Health
+    ///         Attack
+    ///     LevelController
+    ///         SceneIndex
+    ///     SpecialsManager
+    ///         Specials
+    /// </summary>
+    /// <returns></returns>
+    public bool SaveGame(int fileNumb)
+    {
+        if (!File.Exists(Application.persistentDataPath + gameDataPath + fileNumb.ToString() + datafileEnding))
+        {
+            File.Create(Application.persistentDataPath + gameDataPath + fileNumb.ToString() + datafileEnding);
+        }
+
+        StreamWriter sw = new StreamWriter(Application.persistentDataPath + gameDataPath + fileNumb.ToString() + datafileEnding);
+
+        sw.Write(JsonUtility.ToJson(LevelController.Instance.PlayerState));
+
+        sw.Close();
+
+        return true;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public bool LoadGame(int fileNumb)
+    {
+        if(!File.Exists(Application.persistentDataPath + gameDataPath + fileNumb.ToString() + datafileEnding))
+        {
+            return false;
+        }
+
+        StreamReader sr = new StreamReader(Application.persistentDataPath + gameDataPath + fileNumb.ToString() + datafileEnding);
+
+        string savedData = string.Empty;
+
+        string line;
+        while((line = sr.ReadLine()) != null)
+        {
+            savedData += line;
+        }
+
+        LevelController.Instance.PlayerState = JsonUtility.FromJson<GameData>(savedData);
+
+        return true;
     }
 }

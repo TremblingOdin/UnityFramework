@@ -7,7 +7,7 @@ public enum UpgradeType
     DASH
 }
 
-public class PlatformerSpecials : MonoBehaviour
+public class SpecialsManager : MonoBehaviour
 {
     /// <summary>
     /// Upgrade to keep track of and if it's enabled
