@@ -21,6 +21,8 @@ public class Movement : MonoBehaviour
 
     protected MovementType movementType = MovementType.NONE;
 
+    public bool FaceRight { get; set; }
+
     public float Speed
     {
         get { return speed; }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum UpgradeType
 {
-    DASH
+    DASH, WALLHANG, JUMP
 }
 
 public class SpecialsManager : MonoBehaviour
