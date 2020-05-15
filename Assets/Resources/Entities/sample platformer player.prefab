@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 2590571830333618708}
   - component: {fileID: 4527114614733671903}
   - component: {fileID: 7088126189393175469}
+  - component: {fileID: 8243762964269228696}
   m_Layer: 0
   m_Name: sample platformer player
   m_TagString: Untagged
@@ -250,6 +251,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   specials:
   - {fileID: 4527114614733671903}
+--- !u!114 &8243762964269228696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2590571830333618714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd77791c2f9541b40a05439af210eccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hurtBox: {fileID: 0}
+  firepoint: {fileID: 0}
+  bulletPrefabs: []
 --- !u!1 &4211830371092997864
 GameObject:
   m_ObjectHideFlags: 0

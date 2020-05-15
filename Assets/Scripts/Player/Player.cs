@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private SpecialsManager platformerSpecials;
 
+    [SerializeField]
+    private CombatSystem combatSystem;
+
     protected Dictionary<KeyCode, UserInput> interact;
 
     protected virtual void Awake()
@@ -55,6 +58,11 @@ public class Player : MonoBehaviour
         if(platformerSpecials != null)
         {
             platformerSpecials.LoadKeys(interact);
+        }
+
+        if(combatSystem != null)
+        {
+            combatSystem.LoadAttack(interact);
         }
 
         if(movement == Movement.MovementType.PLATFORMER && !interact.ContainsValue(UserInput.JUMP)

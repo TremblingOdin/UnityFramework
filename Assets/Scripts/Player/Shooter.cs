@@ -31,7 +31,8 @@ public class Shooter : CombatSystem
         foreach (KeyCode key in attacks) {
             if (Input.GetKeyDown(key))
             {
-                Instantiate(bulletSelection);
+                //Instantiate(bulletSelection);
+                Debug.Log("Shoot");
             }
         }
     }
@@ -41,6 +42,7 @@ public class Shooter : CombatSystem
     {
         foreach(KeyCode key in attackSettings.Keys)
         {
+            Debug.Log(key);
             if(attackSettings[key] == Player.UserInput.ATTACK)
             {
                 attacks.Add(key);
