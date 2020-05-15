@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1461631296165413163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5965600559714318226}
+  m_Layer: 0
+  m_Name: WallCheckRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5965600559714318226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461631296165413163}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.1, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2590571830333618713}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2590571830333618714
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,9 +61,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2590571830333618714}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0971, y: 0.0245, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 6175951983417656779}
+  - {fileID: 8956204267592696523}
+  - {fileID: 5965600559714318226}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -101,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSystem: {fileID: 2590571830333618708}
   swimming: {fileID: 0}
+  platformerSpecials: {fileID: 7088126189393175469}
 --- !u!61 &2590571830333618709
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -165,13 +199,21 @@ MonoBehaviour:
   horizontalMove: 0
   verticalMove: 0
   isGrounded: 1
+  groundRadius: 0.1
+  wallRadius: 0.1
+  touchingWall: 0
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 512
+  whatIsWall:
+    serializedVersion: 2
+    m_Bits: 256
+  groundCheck: {fileID: 8956204267592696523}
+  wallCheck:
+  - {fileID: 6175951983417656779}
+  - {fileID: 5965600559714318226}
   canJump: 1
-  canSwim: 0
-  strokeTime: 20
-  swimDampen: 1
   jumpForce: 200
-  groundingTag: Ground
-  waterTag: Water
   walkForwardAnimationID: 
 --- !u!114 &4527114614733671903
 MonoBehaviour:
@@ -190,9 +232,9 @@ MonoBehaviour:
   dashSpeed: 5
   invincibilityFrames: 20
   dashFrames: 20
+  dirDecisionFrames: 3
   dashing: 0
   dirSet: 0
-  dirDecisionFrames: 3
   dashDir: {x: 0, y: 0}
 --- !u!114 &7088126189393175469
 MonoBehaviour:
@@ -208,3 +250,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   specials:
   - {fileID: 4527114614733671903}
+--- !u!1 &4211830371092997864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6175951983417656779}
+  m_Layer: 0
+  m_Name: WallCheckLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6175951983417656779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4211830371092997864}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.1, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2590571830333618713}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6396166594042381879
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8956204267592696523}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8956204267592696523
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6396166594042381879}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2590571830333618713}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
