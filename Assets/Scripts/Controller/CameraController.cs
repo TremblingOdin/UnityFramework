@@ -1,14 +1,11 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
 public class CameraController : Controller
 {
     private GameObject gtView;
     private Vector2 cameraStart;
 
-    public Camera Cam { get; private set; }
+    public CameraHelper Cam { get; private set; }
     public static CameraController Instance { get; private set; } = new CameraController();
 
     private CameraController()
@@ -23,18 +20,13 @@ public class CameraController : Controller
 
     }
 
-    protected override void SceneLoaded(Scene s, LoadSceneMode lsm)
-    {
-        Cam = GameObject.FindObjectOfType<Camera>();
-    }
-
     /// <summary>
     /// Send out a raycast to see what was clicked, then check if it has an OnClick function and execute it
     /// </summary>
     private void Clicked()
     {
         RaycastHit2D hit;
-        hit = Physics2D.Raycast(Cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        hit = Physics2D.Raycast(Cam.RealCam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         if (hit.collider != null)
         {
             if(hit.collider.GetComponent<Clickable>() != null)

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +22,8 @@ public class AudioController : Controller
 
         title = GameTypeTitle.AUDIO;
         AudioLibrary = new Dictionary<int, AudioData>();
+
+        SceneManager.sceneLoaded += SceneLoaded;
     }
 
     protected override void SceneLoaded(Scene s, LoadSceneMode lsm)
