@@ -15,9 +15,9 @@ public enum Menus
 /// </summary>
 public class LevelController : Controller
 {
-    public int CurrentLevel { get; private set; }
-
-    public bool Paused { get; set; } = false;
+    public static int CurrentLevel { get; private set; }
+    public static bool NewMusic { get; set; } = true;
+    public static bool Paused { get; set; } = false;
 
     public static LevelController Instance { get; private set; } = new LevelController();
 

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[System.Serializable]
 public struct AudioData
 {
     public int scene;
@@ -11,28 +10,31 @@ public struct AudioData
 
 public enum PlayCase
 {
-    Menu, Travel, Battle, Special
+    Menu, Travel, Battle, Special, Intro, Default
 }
 
 public class AudioHelper : MonoBehaviour
 {
-    [SerializeField]
-    private AudioClip dimChime;
-    [SerializeField]
-    private AudioClip dim2NoteChime;
-    [SerializeField]
-    private AudioClip introlessLevelSong;
+    // Serialized Audio Clips for SFX and the public getters for them
 
-    public AudioClip DIM_CHIME { get { return dimChime; } }
-    public AudioClip DIM_2NOTE_CHIME { get { return dim2NoteChime; } }
-    public AudioClip INTROLESS_LEVEL_SONG { get { return introlessLevelSong; } }
+    // Dictionary List to be assigned to audio controller
+    private AudioData[] audioList;
+    //Used in QueueTrackChange to hold the future audioclip
+    private AudioClip queue;
 
     // Start is called before the first frame update
     void Awake()
     {
+        if(AudioController.Instance.AudioObject != null && AudioController.Instance.AudioObject != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         DontDestroyOnLoad(gameObject);
 
         AudioController.Instance.LinkAudioObject(this);
+        AudioController.Instance.FillAudioLibrary(audioList);
     }
 
     /// <summary>
@@ -40,11 +42,21 @@ public class AudioHelper : MonoBehaviour
     /// </summary>
     private void TrackChange(AudioClip newTrack)
     {
-        CameraController.Instance.Cam.GetComponent<AudioSource>().Stop();
-        CameraController.Instance.Cam.GetComponent<AudioSource>().clip = newTrack;
-        Debug.Log(CameraController.Instance.Cam.GetComponent<AudioSource>().clip);
-        CameraController.Instance.Cam.GetComponent<AudioSource>().loop = true;
-        CameraController.Instance.Cam.GetComponent<AudioSource>().Play();
+        CameraController.Instance.Cam.Audio.Stop();
+        CameraController.Instance.Cam.Audio.clip = newTrack;
+        CameraController.Instance.Cam.Audio.loop = true;
+        CameraController.Instance.Cam.Audio.Play();
+    }
+
+    public void QueueTrackChange(AudioClip firstTrack, AudioClip nextTrack)
+    {
+        float length = firstTrack.length;
+        queue = nextTrack;
+
+        TrackChange(firstTrack);
+        CameraController.Instance.Cam.Audio.loop = false;
+
+        Invoke("PlayNextClip", length);
     }
 
     /// <summary>
@@ -53,5 +65,16 @@ public class AudioHelper : MonoBehaviour
     public void UnInvoke()
     {
         CancelInvoke();
+    }
+
+    /// <summary>
+    /// Sets the playing clip to what's queued and set's it to loop
+    /// </summary>
+    public void PlayNextClip()
+    {
+        CameraController.Instance.Cam.Audio.Stop();
+        CameraController.Instance.Cam.Audio.clip = queue;
+        CameraController.Instance.Cam.Audio.loop = true;
+        CameraController.Instance.Cam.Audio.Play();
     }
 }

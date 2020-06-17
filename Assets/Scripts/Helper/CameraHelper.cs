@@ -1,10 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraHelper : MonoBehaviour
 {
-    public Camera RealCam { get; set; }
+    [SerializeField]
+    private Camera realCam;
+    [SerializeField]
+    private AudioSource audioSource;
+
+    public Camera RealCam { get { return realCam; } set { realCam = value; } }
+    public AudioSource Audio { get { return audioSource; } set { audioSource = value; } }
 
     // Start is called before the first frame update
     void Start()
