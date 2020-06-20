@@ -20,6 +20,7 @@ public class LevelController : Controller
     public static bool Paused { get; set; } = false;
 
     public static LevelController Instance { get; private set; } = new LevelController();
+    public LevelHelper LevelObject { get; set; }
 
     public GameObject PauseMenu { get; set; }
     public GameObject GameOverMenu { get; set; }
@@ -48,7 +49,6 @@ public class LevelController : Controller
 
     protected override void SceneLoaded(Scene s, LoadSceneMode lsm)
     {
-        Debug.Log("loaded");
         SetUpLevel();
     }
 
@@ -59,6 +59,11 @@ public class LevelController : Controller
     public Scene CurrentScene
     {
         get { return SceneManager.GetActiveScene(); }
+    }
+
+    public void LoadGameOver()
+    {
+        LoadScene(LevelObject.GameOverScene, true);
     }
 
     /// <summary>
@@ -120,6 +125,20 @@ public class LevelController : Controller
             Paused = false;
             Time.timeScale = 1;
             //TODO: remove pause menu
+        }
+    }
+
+    public bool LinkLevelObject(LevelHelper link)
+    {
+        LevelObject = link;
+
+        if (LevelObject == link)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

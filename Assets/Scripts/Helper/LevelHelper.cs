@@ -1,18 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LevelHelper : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private GameObject playerPrefab;
+    [SerializeField]
+    private int gameOverScene;
 
-    // Update is called once per frame
-    void Update()
+    public bool PlayGame { get; set; } = true;
+    public int GameOverScene { get { return gameOverScene; } }
+
+    public GameData p;
+
+    void Awake()
     {
-        
+        if (LevelController.Instance.LevelObject != null && LevelController.Instance.LevelObject != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
+
+        LevelController.Instance.LinkLevelObject(this);
     }
 }
